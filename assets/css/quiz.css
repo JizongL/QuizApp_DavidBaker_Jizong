@@ -1,0 +1,36 @@
+* {
+    font-family: 'Times New Roman', Times, serif;
+}
+
+body {
+    background: rgba(0, 0, 0, .2);
+}
+
+#wrapper {
+    margin: 100px auto;
+    max-width: 980px;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+#header {
+    margin: 1% auto;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    width: 60%;
+}
+
+.header-text {
+    font-size: 40px;
+    font-style: oblique;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.direction-text {
+    font-size: 18px;
+    line-height: 1.8em;
+    text-align: center;
+}
+
+
