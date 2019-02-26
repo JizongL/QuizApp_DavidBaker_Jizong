@@ -1,0 +1,20 @@
+ul li{
+  list-style-type: none;
+  border:1px solid lightgray;
+  width:200px;
+  height:30px;
+  margin-top:10px;
+  padding-top:5px;
+}
+
+ul li:hover{
+  background-color:pink;
+}
+.quiz-question{
+  font-size:30px;
+  
+}
+
+#quiz-next{
+  font-size:15px;
+}
