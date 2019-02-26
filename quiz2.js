@@ -15,38 +15,106 @@ const QUIZBASE = {
   score:0,
 };
 
-function generateIntro(){
+
+  
+
+function generateStart(){
   console.log('`generateIntro` ran');
+  return `<div id='start-quiz-box'>
+  <button id = 'quiz-intro'>Read quiz intro</button>
+  <p>Let's start Quiz</p>
+    <button id='quiz-start' type='submit'>Start Quiz</button>
+    </div>`;
 }
 
-function generateQuiz(){
+
+
+function generateQuiz(n){
   console.log('`generateQuiz` ran');
+  return `<div id = 'quiz-content'>
+  <p class='quiz-question'>1. Normal adult dogs have how many teeth?</p>
+  <form class = 'quiz-submit-form'>
+    <fieldset>
+    <label class="answerOption">
+    <input type="radio" value="${QUIZBASE.QUIZ[n].answerKey.a}" name="answer" required>
+    <span>A) 24</span>
+    </label>
+    <label class="answerOption">
+    <input type="radio" value="${QUIZBASE.QUIZ[n].answerKey.b}" name="answer" required>
+    <span>B) 38</span>
+    </label>
+    <label class="answerOption">
+    <input type="radio" value="${QUIZBASE.QUIZ[n].answerKey.c}" name="answer" required>
+    <span>C) 42</span>
+    </label>
+    <label class="answerOption">
+    <input type="radio" value="${QUIZBASE.QUIZ[n].answerKey.d}" name="answer" required>
+    <span>D) 32</span>
+    </label>
+    <button type="submit" class="quiz-answer-submit">Submit</button>
+    </fieldset>
+    </form>
+    <div class='quiz-navigate-bar'>
+        <button type="submit" class="quiz-answer-submit">Restart</button>
+        <button type="submit" class="quiz-answer-submit">Next</button>
+    </div>
+    </div>`;
 }
+
+
+
 
 
 function generateStatus(){
   console.log('`generateStatus` ran');
 }
 
+
+
 function render() {
   console.log('`render` ran');
   if (!QUIZBASE.QUIZ.quizStart) {
-    $('#quiz-intro').html(generateIntro());
-    $('#quiz-area').empty();
-    $('#quiz-status').empty();
+    console.log('not started',QUIZBASE.QUIZ.quizStart);
+    $('#content-box').empty();
+    $('#content-box').html(generateStart());
+    //$('#quiz-status').empty();
   } else {
-    $('#quiz-intro').empty();
-    $('#quiz-area').html(generateQuiz());
-    $('#quiz-status').html(generateStatus());
+    $('#content-box').empty();
+    $('#content-box').html(generateQuiz(0));
+    //$('#quiz-status').html(generateStatus());
   }
 }
 
+function startQuiz(){
+  $('#quiz-start').on('click', function(){
+    QUIZBASE.QUIZ.quizStart = !QUIZBASE.QUIZ.quizStart;
+    render();
+
+  });
+  
+}
+
+function nextQuestion(){
+  console.log('`next question`');
+}
+
+function submitAnswer(){
+  console.log('`submitAnswer` ran');
+}
+
+function restartQuiz(){
+  console.log('`restartQuiz` ran');
+}
+
+
+
 
 function handleQuizApp(){
-  generateQuiz();
-  generateIntro();
-  generateStatus();
-  //render();
+  
+  
+  render();
+  startQuiz();
+  nextQuestion();
 }
 
 $(handleQuizApp);
