@@ -9,60 +9,32 @@ body {
 }
 
 #wrapper {
-    margin: 100px auto;
+    margin: 100 auto;
     max-width: 980px;
     padding-right: 10px;
     padding-left: 10px;
 }
 
-#header {
+.container{
+    margin: 0 auto;
+    
+}
+
+#js-header {
     margin: 1% auto;
     padding-top: 1%;
     padding-bottom: 1%;
     width: 60%;
 }
 
-.header-text {
+#js-header-text {
     font-size: 40px;
     font-style: oblique;
     margin-bottom: 15px;
 }
 
-.direction-text {
+#js-direction-text {
     font-size: 18px;
     line-height: 1.8em;
 }
-
-#start-reset-btn {
-    margin-bottom: 10px;
-    margin-top: 10px;
-}
-
-#quiz,
-#header,
-#submit-btn,
-#results,
-#start-reset-btn-container {
-    text-align: center;
-}
-
-/* button styles */
-
-#start {
-    margin-right: 10px;
-}
-
-#reset {
-    margin-left: 10px;
-}
-
-#submit {
-    text-align: center;
-}
-
-.submit-btn {
-    margin-top: 15px;
-    font-weight: bolder;
-}
-
 
