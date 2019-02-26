@@ -1,0 +1,2 @@
+All text has a js-(className)
+Always name everything in scope with fashion
