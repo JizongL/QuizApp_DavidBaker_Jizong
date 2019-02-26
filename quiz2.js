@@ -15,6 +15,8 @@ const QUIZBASE = {
   ],
   quizStart:false,
   score:0,
+  quizArray:[],
+  historyArray:[]
 };
 
 
@@ -81,8 +83,11 @@ function render() {
     $('#content-box').html(generateStart());
     //$('#quiz-status').empty();
   } else {
+    generateQuizArray();
     $('#content-box').empty();
-    $('#content-box').html(generateQuiz(0));
+    let index = QUIZBASE.quizArray.pop();
+    console.log('test index in render',index);
+    $('#content-box').html(generateQuiz(index));
     //$('#quiz-status').html(generateStatus());
   }
 }
@@ -102,10 +107,33 @@ function validateQuizCompleted(){
 
 }
 
+
+function shuffleArray(a){
+  let j, x, i;
+  for (i = a.length - 1; i > 0; i--) {
+    j = Math.floor(Math.random() * (i + 1));
+    x = a[i];
+    a[i] = a[j];
+    a[j] = x;
+  }
+  console.log('original',a);
+  return a;
+}
+
+
+function generateQuizArray(){
+  let arrayLength = QUIZBASE.QUIZ.length;
+  for (let i =0;i < arrayLength;i++){
+    QUIZBASE.quizArray.push(i);
+  }
+  QUIZBASE.quizArray = shuffleArray(QUIZBASE.quizArray);
+}
+
 function nextQuestion(){
   console.log('`next question`');
   $('.quiz-next').click(function(event){
     const currentQuizId = $(this).parents('#quiz-content').data('item-id');
+    render();
   });
 }
 
@@ -129,6 +157,7 @@ function submitAnswer(){
     currentQuizObject.completed = !currentQuizObject.completed;
     currentQuizObject.submittedKey = submitedKey;
     console.log(QUIZBASE.QUIZ);
+    nextQuestion();
   });
 }
 
