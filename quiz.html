@@ -3,23 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <title>CSS Responsive Grid Challenge</title>
-
-  <!-- Responsive viewport tag, tells small screens that it's responsive -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
   <!-- Stylesheets -->
   <link rel="stylesheet" href="assets/css/reset.css" />
   <link rel="stylesheet" href="assets/css/quiz.css" />
 </head>
 <body>
-
-<main>
-  <div class='quiz-container'>
-      <button id='js-quiz-submit' type='submit'>Submit</button>
-      <button id='js-quiz-start' type='submit'>Start</button>
+<div class='wrapper'>
+  <div class="container">
+    <div id='js-score-container'><span id='js-score-count'>Score: 0</span></div>
+    <main>
+        <h2 id='js-question-content'><span>What is the color of the Sky?</span></h2>
+          <button id='js-quiz-submit' type='submit'>Submit</button>
+    </main>
+    <div id="js-btn-container">
+      <button id='js-quiz-start' type='restart'>Restart</button>
+      <div id='js-current-question'><span>1 of 10</span></div>
       <button id='js-quiz-start' type='submit'>Next</button>
+    </div>
   </div>
-</main>
+</div>
 
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="assets/js/questionAnswer.js"></script>  
