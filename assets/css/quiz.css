@@ -17,7 +17,6 @@ body {
 
 .container{
     margin: 0 auto;
-    
 }
 
 #js-header {
@@ -38,3 +37,6 @@ body {
     line-height: 1.8em;
 }
 
+#js-start-btn {
+
+}
