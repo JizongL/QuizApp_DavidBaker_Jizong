@@ -1,3 +1,5 @@
+/* General styling */
+
 * {
     font-family: 'Times New Roman', Times, serif;
 }
@@ -24,13 +26,43 @@ body {
     font-size: 40px;
     font-style: oblique;
     margin-bottom: 15px;
-    text-align: center;
 }
 
 .direction-text {
     font-size: 18px;
     line-height: 1.8em;
+}
+
+#start-reset-btn {
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+#quiz,
+#header,
+#submit-btn,
+#results,
+#start-reset-btn-container {
     text-align: center;
+}
+
+/* button styles */
+
+#start {
+    margin-right: 10px;
+}
+
+#reset {
+    margin-left: 10px;
+}
+
+#submit {
+    text-align: center;
+}
+
+.submit-btn {
+    margin-top: 15px;
+    font-weight: bolder;
 }
 
 
