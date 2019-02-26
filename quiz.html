@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CSS Responsive Grid Challenge</title>
+
+  <!-- Responsive viewport tag, tells small screens that it's responsive -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="grid.css" />
+  <link rel="stylesheet" href="quiz.css" />
+</head>
+<body>
+
+
+    <div id = 'quiz-status'>
+      <ul id='quiz-status-field'>
+        <li id = 'quiz-number'>Qestion: 6/10</li>
+        <li id = 'quiz-score'>Score:30/100</li>
+      </ul>
+    </div>
+<main>
+  <div id='quiz-area'>
+    <div id = 'quiz-content'>
+      <p class='quiz-question'>1. Normal adult dogs have how many teeth?</p>
+      <form class = 'quiz-submit-form ${QUIZBASE.QUIZ[n].id}'>
+        <fieldset>
+        <label class="answerOption">
+        <input type="radio" value="${QUIZBASE.QUIZ[n].answerKey.a}" name="answer" required>
+        <span>A) 24</span>
+        </label>
+        <label class="answerOption">
+        <input type="radio" value="${QUIZBASE.QUIZ[n].answerKey.b}" name="answer" required>
+        <span>B) 38</span>
+        </label>
+        <label class="answerOption">
+        <input type="radio" value="${QUIZBASE.QUIZ[n].answerKey.c}" name="answer" required>
+        <span>C) 42</span>
+        </label>
+        <label class="answerOption">
+        <input type="radio" value="${QUIZBASE.QUIZ[n].answerKey.d}" name="answer" required>
+        <span>D) 32</span>
+        </label>
+        <button type="submit" class="quiz-answer-submit">Submit</button>
+        </fieldset>
+        </form>
+        <div class='quiz-navigate-bar'>
+            <button type="submit" class="quiz-answer-submit">Restart</button>
+            <button type="submit" class="quiz-answer-submit">Next</button>
+        </div>
+        </div>
+  </div>
+  
+</main>
+</body>
+<!--script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script-->
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="quiz2.js"></script>
+</html>  
