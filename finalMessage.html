@@ -17,7 +17,19 @@
     
 <main>
   <div id = 'content-box'>
-     
+      <div class='quiz-final-message-box'>
+          <p>Thank you! you have completed this quiz.</p>
+        <ul class = "quiz-final-stat">
+          <li>Your score is <span>${statArray[0]}</span></li>
+          <li>You got</li>
+          <li><span>${statArray[1]}</span>correct </li>
+          <li><span>${statArray[2]}</span>wrong </li>
+        </ul>
+        </div> 
+        <div>
+        <button class = 'quiz-review' type = 'submit'>Review</button>
+        <button class = 'quiz-restart' type = 'submit'>Restart</button>      
+        </div>
   
 </div>
   

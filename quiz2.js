@@ -15,6 +15,7 @@ const questionThree = ' What is the most common training command taught to dogs?
 const keyThree = {a:'Stay',b:'Beg',c:'Sit',d:'Dance'};
 const explainationThree = 'this is a test explain for question 3';
 
+// Database 
 const QUIZBASE = {
   QUIZ:[
     {id:cuid(),question:questionOne,answerKey:keyOne,correctKey:'c',completed:false,isCorrect:false,submittedKey:'',explaination:explainationOne},
@@ -26,12 +27,13 @@ const QUIZBASE = {
   score:0,
   quizArray:[],
   historyArray:[],
-  completed:false
+  completed:false,
+  historyScore:[]
 };
 
 
   
-
+// generate starter page 
 function generateStart(){
   console.log('`generateIntro` ran');
   return `<div id='start-quiz-box'>
@@ -43,10 +45,7 @@ function generateStart(){
     </div>`;
 }
 
-function generateQuizIntro(){
-
-}
-
+// generate quiz
 function generateQuiz(n){
   console.log('`generateQuiz` ran');
   console.log('quiz num',n);
@@ -83,10 +82,7 @@ function generateQuiz(n){
     </div>`;
 }
 
-
-
-
-
+// status, real time update 
 function generateStatus(quizNum,score){
   console.log('`generateStatus` ran');
   return ` <ul id='quiz-status-field'>
@@ -95,16 +91,18 @@ function generateStatus(quizNum,score){
 </ul>`;
 }
 
-
+// calculate quiz stat and update database
 function calculateQuizStat(){
   
   let correctAnswers = QUIZBASE.QUIZ.filter(quiz => quiz.isCorrect===true);
   let score = correctAnswers.length *10;
   let correctRecorded = correctAnswers.length;
   let wrongRecorded = QUIZBASE.historyArray.length - correctRecorded;
+  QUIZBASE.historyScore=score;
   return [score,correctRecorded,wrongRecorded];
 }
 
+// final page with result update 
 function generateFinishedMessage(){
   
   let statArray = calculateQuizStat();
@@ -124,6 +122,7 @@ function generateFinishedMessage(){
 </div>`;
 }
 
+// generate review page 
 function generateQuizReviewString(){
   return `<div>review the quiz,review content to be to be updated later</div>
   <button class='quiz-review-restart' type='submit'>restart</button>
@@ -131,7 +130,7 @@ function generateQuizReviewString(){
 
 }
 
-
+// review Quiz, need to provide content 
 function reviewQuiz(){
   console.log('`reviewQuiz` ran');
   $('#content-box').html(generateQuizReviewString());
@@ -140,7 +139,7 @@ function reviewQuiz(){
   });
 }
 
-
+// Render 
 function render() {
   console.log('`render` ran');
   console.log('test quizstart status',!QUIZBASE.QUIZ.quizStart);
@@ -178,8 +177,9 @@ function render() {
   }
 }
 
+// start Quiz 
 function startQuiz(){
-  $('')
+  
   $('#quiz-start-button').on('click', function(){
    
     QUIZBASE.quizStart = !QUIZBASE.quizStart;
@@ -192,9 +192,7 @@ function startQuiz(){
   
 }
 
-
-
-
+// function for shuffling
 function shuffleArray(a){
   let j, x, i;
   for (i = a.length - 1; i > 0; i--) {
@@ -207,7 +205,7 @@ function shuffleArray(a){
   return a;
 }
 
-
+// array for shuffling quiz order 
 function generateQuizArray(){
   let arrayLength = QUIZBASE.QUIZ.length;
   for (let i =0;i < arrayLength;i++){
@@ -216,8 +214,7 @@ function generateQuizArray(){
   QUIZBASE.quizArray = shuffleArray(QUIZBASE.quizArray);
 }
 
-
-
+// prompt after submit 
 function generatePromptAfterSubmit(rightWrong,Explain=''){
   return `<div class = 'quiz-transition-box'>
   <div class='quiz-correct-or-wrong'>
@@ -281,8 +278,7 @@ function getAnswerKey(object, value) {
   return key;
 }
 
-
-
+// submit answer 
 function submitAnswer(){
   console.log('`submitAnswer` ran');
   $('form').on('submit',function(event){
@@ -310,11 +306,7 @@ function submitAnswer(){
   });
 }
 
-
-
-
-
-
+// restart quiz
 function restartQuiz(){
   console.log('`restartQuiz` ran');
   QUIZBASE.quizStart = false;
@@ -325,9 +317,7 @@ function restartQuiz(){
   startQuiz();
 }
 
-
-
-
+// quiz handler 
 function handleQuizApp(){
   
   
