@@ -2,17 +2,26 @@
 
 'use strict';
 
-const questionOne = '1. Normal adult dogs have how many teeth?';
+
+// quiz data base
+
+const questionOne = ' Normal adult dogs have how many teeth?';
 const keyOne = {a:24,b:38,c:42,d:32};
 const explainationOne = 'this is a test explain for question 2';
-const questionTwo = '2. Through what part of the body do dogs sweat?';
+const questionTwo = 'Through what part of the body do dogs sweat?';
 const keyTwo = {a:'Mouth',b:'Ears',c:'Nose',d:'Paws'};
 const explainationTwo = 'this is a test explain for question 2';
+const questionThree = ' What is the most common training command taught to dogs?';
+const keyThree = {a:'Stay',b:'Beg',c:'Sit',d:'Dance'};
+const explainationThree = 'this is a test explain for question 3';
+
 const QUIZBASE = {
   QUIZ:[
     {id:cuid(),question:questionOne,answerKey:keyOne,correctKey:'c',completed:false,isCorrect:false,submittedKey:'',explaination:explainationOne},
-    {id:cuid(),question:questionTwo,answerKey:keyTwo,correctKey:'d',completed:false,isCorrect:false,submittedKey:'',explaination:explainationTwo}
+    {id:cuid(),question:questionTwo,answerKey:keyTwo,correctKey:'d',completed:false,isCorrect:false,submittedKey:'',explaination:explainationTwo},
+    {id:cuid(),question:questionThree,answerKey:keyThree,correctKey:'d',completed:false,isCorrect:false,submittedKey:'',explaination:explainationThree}
   ],
+  quizTitle:'Doggy Pop Quiz',
   quizStart:false,
   score:0,
   quizArray:[],
@@ -26,35 +35,43 @@ const QUIZBASE = {
 function generateStart(){
   console.log('`generateIntro` ran');
   return `<div id='start-quiz-box'>
-  <button id = 'quiz-intro'>Read quiz intro</button>
-  <p>Let's start Quiz</p>
-    <button id='quiz-start' type='submit'>Start Quiz</button>
+  <button id = 'quiz-intro-button'>Read quiz intro</button>
+  <div class='quiz-start-content'>
+  <p id='quiz-start-title'>Welcome to ${QUIZBASE.quizTitle}</p>
+  </div>
+    <button id='quiz-start-button' type='submit'>Start Quiz</button>
     </div>`;
 }
 
+function generateQuizIntro(){
 
+}
 
 function generateQuiz(n){
   console.log('`generateQuiz` ran');
+  console.log('quiz num',n);
+  console.log('test quiz object index in generate quiz',QUIZBASE.QUIZ[n]);
+  console.log('test answer keys',QUIZBASE.QUIZ[n].answerKey);
+  console.log('test correct answer keys',QUIZBASE.QUIZ[n].correctKey);
   return `<div data-item-id = ${QUIZBASE.QUIZ[n].id} id = 'quiz-content'>
-  <p class='quiz-question'>1. Normal adult dogs have how many teeth?</p>
+  <p class='quiz-question'>${QUIZBASE.historyArray.length}. ${QUIZBASE.QUIZ[n].question}</p>
   <form data-item-id = ${QUIZBASE.QUIZ[n].id} class = 'quiz-submit-form'>
     <fieldset>
     <label class="answerOption">
     <input type="radio" value="${QUIZBASE.QUIZ[n].answerKey.a}" name="answer" required>
-    <span>A) 24</span>
+    <span>A) ${QUIZBASE.QUIZ[n].answerKey.a}</span>
     </label>
     <label class="answerOption">
     <input type="radio" value="${QUIZBASE.QUIZ[n].answerKey.b}" name="answer" required>
-    <span>B) 38</span>
+    <span>B) ${QUIZBASE.QUIZ[n].answerKey.b}</span>
     </label>
     <label class="answerOption">
     <input type="radio" value="${QUIZBASE.QUIZ[n].answerKey.c}" name="answer" required>
-    <span>C) 42</span>
+    <span>C) ${QUIZBASE.QUIZ[n].answerKey.c}</span>
     </label>
     <label class="answerOption">
     <input type="radio" value="${QUIZBASE.QUIZ[n].answerKey.d}" name="answer" required>
-    <span>D) 32</span>
+    <span>D) ${QUIZBASE.QUIZ[n].answerKey.d}</span>
     </label>
     <button type="submit" class="quiz-answer-submit">Submit</button>
     </fieldset>
@@ -79,17 +96,76 @@ function generateStatus(quizNum,score){
 }
 
 
+function calculateQuizStat(){
+  
+  let correctAnswers = QUIZBASE.QUIZ.filter(quiz => quiz.isCorrect===true);
+  let score = correctAnswers.length *10;
+  let correctRecorded = correctAnswers.length;
+  let wrongRecorded = QUIZBASE.historyArray.length - correctRecorded;
+  return [score,correctRecorded,wrongRecorded];
+}
+
+function generateFinishedMessage(){
+  
+  let statArray = calculateQuizStat();
+  console.log('test array stat',statArray);
+  return ` <div class='quiz-final-message-box'>
+  <p>Thank you! you have completed this quiz.</p>
+<ul class = "quiz-final-stat">
+  <li>Your score is <span>${statArray[0]}</span></li>
+  <li>You got</li>
+  <li><span>${statArray[1]}</span>correct </li>
+  <li><span>${statArray[2]}</span>wrong </li>
+</ul>
+</div> 
+<div>
+<button class = 'quiz-review' type = 'submit'>Review</button>
+<button class = 'quiz-restart' type = 'submit'>Restart</button>      
+</div>`;
+}
+
+function generateQuizReviewString(){
+  return `<div>review the quiz,review content to be to be updated later</div>
+  <button class='quiz-review-restart' type='submit'>restart</button>
+  `;
+
+}
+
+
+function reviewQuiz(){
+  console.log('`reviewQuiz` ran');
+  $('#content-box').html(generateQuizReviewString());
+  $('.quiz-review-restart').click(function(){
+    restartQuiz();
+  });
+}
+
 
 function render() {
   console.log('`render` ran');
-  if (!QUIZBASE.QUIZ.quizStart) {
+  console.log('test quizstart status',!QUIZBASE.QUIZ.quizStart);
+  if (!QUIZBASE.quizStart) {
     console.log('not started',QUIZBASE.QUIZ.quizStart);
     $('#content-box').empty();
     $('#content-box').html(generateStart());
     $('#quiz-status').empty();
+    
   } else {
-    generateQuizArray();
     $('#content-box').empty();
+    console.log('testing quizArray length in render:',QUIZBASE.quizArray.length);
+    if(!QUIZBASE.quizArray.length){
+      console.log('quiz is finished in render');
+      
+      $('#content-box').html(generateFinishedMessage());// bug not rendering
+      $('.quiz-restart').click(function(){
+        restartQuiz();
+      });
+      $('.quiz-review').click(function(){
+        reviewQuiz();
+      });
+    }
+    
+    console.log('testing quizArray in render',QUIZBASE.quizArray);
     let index = QUIZBASE.quizArray.shift();
     console.log('test index in render',index);
     // push it to history index
@@ -97,23 +173,26 @@ function render() {
     $('#content-box').html(generateQuiz(index));
     // first argument keeps track of the number of question
     $('#quiz-status').html(generateStatus(QUIZBASE.historyArray.length,QUIZBASE.score));
+    // submitAnswer();
+    
   }
 }
 
 function startQuiz(){
-  $('#quiz-start').on('click', function(){
-    QUIZBASE.QUIZ.quizStart = !QUIZBASE.QUIZ.quizStart;
+  $('')
+  $('#quiz-start-button').on('click', function(){
+   
+    QUIZBASE.quizStart = !QUIZBASE.quizStart;
+    generateQuizArray();
+    console.log('test quiz array in startquiz',QUIZBASE.quizArray);
     render();
     submitAnswer();
-    nextQuestion();
+    
   });
   
 }
 
 
-function validateQuizCompleted(){
-
-}
 
 
 function shuffleArray(a){
@@ -134,18 +213,8 @@ function generateQuizArray(){
   for (let i =0;i < arrayLength;i++){
     QUIZBASE.quizArray.push(i);
   }
-  //QUIZBASE.quizArray = shuffleArray(QUIZBASE.quizArray);
+  QUIZBASE.quizArray = shuffleArray(QUIZBASE.quizArray);
 }
-
-function nextQuestion(){
-  console.log('`next question`');
-  $('.quiz-next').click(function(event){
-    const currentQuizId = $(this).parents('#quiz-content').data('item-id');
-    render();
-  });
-}
-
-
 
 
 
@@ -167,15 +236,35 @@ function generatePromptAfterSubmit(rightWrong,Explain=''){
 function promptAfterSubmit(object){
   console.log('is correct test',object.isCorrect);
   if(object.isCorrect){
+    QUIZBASE.score+=10;
     let correct = 'Correct,well done!';
     let trainsition = generatePromptAfterSubmit(correct);
     $('#content-box').html(trainsition);
+    $('.quiz-transition-continue').on('click',function(){
+      if(QUIZBASE.quizArray.length ===0){
+        console.log('quiz is finished');
+        $('#content-box').empty();
+        $('#quiz-status').empty();
+        $('#content-box').html(generateFinishedMessage());
+      }
+      render();
+      submitAnswer();
+      //nextQuestion();
+    });
   }else{
     let wrong = 'Sorry, your answer is incorrect!';
     let trainsition = generatePromptAfterSubmit(wrong,object.explaination);
     $('#content-box').html(trainsition);
     $('.quiz-transition-continue').on('click',function(){
+      if(QUIZBASE.quizArray.length ===0){
+        console.log('quiz is finished');
+        $('#content-box').empty();
+        $('#quiz-status').empty();
+        $('#content-box').html(generateFinishedMessage());
+      }
       render();
+      submitAnswer();
+      //nextQuestion();
     });
   
   }
@@ -183,12 +272,16 @@ function promptAfterSubmit(object){
 
 // get key from value 
 function getAnswerKey(object, value) {
-  return Object.keys(object).find(key => object[key] === Number(value));
+  let key = Object.keys(object).find(key => object[key] === Number(value));
+  if(key===undefined){
+    let key = Object.keys(object).find(key => object[key] === value);
+    return key;
+  }
+  console.log('testing key in geneate answer key',key);
+  return key;
 }
 
-function updateQuizStatus(){
-  console.log('`updateQuizStatus` ran');
-}
+
 
 function submitAnswer(){
   console.log('`submitAnswer` ran');
@@ -197,14 +290,14 @@ function submitAnswer(){
     // get radio button checked value
     let selected = $('input:checked');
     let answer = selected.val();
-    console.log('selected answer',answer);
+    console.log('selected answer',answer);  // tested
     // find current quiz id
     let currentQuizId = $(this).data('item-id');
-    console.log('testing current quiz id',currentQuizId);
+    console.log('testing current quiz id',currentQuizId); //
     let currentQuizObject = QUIZBASE.QUIZ.find(quiz => quiz.id === currentQuizId);
     // get submitted anawer value through cuid. 
-    let submitedKey = getAnswerKey(currentQuizObject.answerKey,answer);
-    console.log('compare keys',currentQuizObject.correctKey,submitedKey);
+    let submitedKey = getAnswerKey(currentQuizObject.answerKey,answer);  // has bug 
+    console.log('compare keys',currentQuizObject.correctKey,submitedKey);  // has bug
 
     if(currentQuizObject.correctKey===submitedKey){
       currentQuizObject.isCorrect =!currentQuizObject.isCorrect;
@@ -224,6 +317,12 @@ function submitAnswer(){
 
 function restartQuiz(){
   console.log('`restartQuiz` ran');
+  QUIZBASE.quizStart = false;
+  QUIZBASE.score=0;
+  QUIZBASE.quizArray=[];
+  QUIZBASE.historyArray=[];
+  render();
+  startQuiz();
 }
 
 
@@ -234,7 +333,7 @@ function handleQuizApp(){
   
   render();
   startQuiz();
-  nextQuestion();
+  
 }
 
 $(handleQuizApp);
