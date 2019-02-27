@@ -10,13 +10,14 @@ const keyTwo = {a:'Mouth',b:'Ears',c:'Nose',d:'Paws'};
 const explainationTwo = 'this is a test explain for question 2';
 const QUIZBASE = {
   QUIZ:[
-    {id:cuid(),question:questionOne,answerKey:keyOne,correctKey:'c',completed:false,submittedKey:'',explaination:explainationOne},
-    {id:cuid(),question:questionTwo,answerKey:keyTwo,correctKey:'d',completed:false,submittedKey:'',explaination:explainationTwo}
+    {id:cuid(),question:questionOne,answerKey:keyOne,correctKey:'c',completed:false,isCorrect:false,submittedKey:'',explaination:explainationOne},
+    {id:cuid(),question:questionTwo,answerKey:keyTwo,correctKey:'d',completed:false,isCorrect:false,submittedKey:'',explaination:explainationTwo}
   ],
   quizStart:false,
   score:0,
   quizArray:[],
-  historyArray:[]
+  historyArray:[],
+  completed:false
 };
 
 
@@ -69,8 +70,12 @@ function generateQuiz(n){
 
 
 
-function generateStatus(){
+function generateStatus(quizNum,score){
   console.log('`generateStatus` ran');
+  return ` <ul id='quiz-status-field'>
+  <li id = 'quiz-number'>Qestion: ${quizNum}/10</li>
+  <li id = 'quiz-score'>Score:${score}/100</li>
+</ul>`;
 }
 
 
@@ -81,14 +86,17 @@ function render() {
     console.log('not started',QUIZBASE.QUIZ.quizStart);
     $('#content-box').empty();
     $('#content-box').html(generateStart());
-    //$('#quiz-status').empty();
+    $('#quiz-status').empty();
   } else {
     generateQuizArray();
     $('#content-box').empty();
-    let index = QUIZBASE.quizArray.pop();
+    let index = QUIZBASE.quizArray.shift();
     console.log('test index in render',index);
+    // push it to history index
+    QUIZBASE.historyArray.push(index);
     $('#content-box').html(generateQuiz(index));
-    //$('#quiz-status').html(generateStatus());
+    // first argument keeps track of the number of question
+    $('#quiz-status').html(generateStatus(QUIZBASE.historyArray.length,QUIZBASE.score));
   }
 }
 
@@ -126,7 +134,7 @@ function generateQuizArray(){
   for (let i =0;i < arrayLength;i++){
     QUIZBASE.quizArray.push(i);
   }
-  QUIZBASE.quizArray = shuffleArray(QUIZBASE.quizArray);
+  //QUIZBASE.quizArray = shuffleArray(QUIZBASE.quizArray);
 }
 
 function nextQuestion(){
@@ -138,28 +146,81 @@ function nextQuestion(){
 }
 
 
+
+
+
+function generatePromptAfterSubmit(rightWrong,Explain=''){
+  return `<div class = 'quiz-transition-box'>
+  <div class='quiz-correct-or-wrong'>
+    <span>${rightWrong}</span>
+  </div>
+  <div class= 'quiz-explaination-field'>
+  <p class = 'quiz-explaination-content'>
+    ${Explain}
+  </p>
+  </div>
+  <button type="submit" class="quiz-transition-continue">Continue</button>
+  
+</div>`;
+}
+
+function promptAfterSubmit(object){
+  console.log('is correct test',object.isCorrect);
+  if(object.isCorrect){
+    let correct = 'Correct,well done!';
+    let trainsition = generatePromptAfterSubmit(correct);
+    $('#content-box').html(trainsition);
+  }else{
+    let wrong = 'Sorry, your answer is incorrect!';
+    let trainsition = generatePromptAfterSubmit(wrong,object.explaination);
+    $('#content-box').html(trainsition);
+    $('.quiz-transition-continue').on('click',function(){
+      render();
+    });
+  
+  }
+}
+
+// get key from value 
 function getAnswerKey(object, value) {
-  console.log(Object.keys(object));
   return Object.keys(object).find(key => object[key] === Number(value));
+}
+
+function updateQuizStatus(){
+  console.log('`updateQuizStatus` ran');
 }
 
 function submitAnswer(){
   console.log('`submitAnswer` ran');
   $('form').on('submit',function(event){
     event.preventDefault();
+    // get radio button checked value
     let selected = $('input:checked');
     let answer = selected.val();
+    console.log('selected answer',answer);
     // find current quiz id
     let currentQuizId = $(this).data('item-id');
+    console.log('testing current quiz id',currentQuizId);
     let currentQuizObject = QUIZBASE.QUIZ.find(quiz => quiz.id === currentQuizId);
-    
+    // get submitted anawer value through cuid. 
     let submitedKey = getAnswerKey(currentQuizObject.answerKey,answer);
+    console.log('compare keys',currentQuizObject.correctKey,submitedKey);
+
+    if(currentQuizObject.correctKey===submitedKey){
+      currentQuizObject.isCorrect =!currentQuizObject.isCorrect;
+    }
     currentQuizObject.completed = !currentQuizObject.completed;
     currentQuizObject.submittedKey = submitedKey;
-    console.log(QUIZBASE.QUIZ);
-    nextQuestion();
+    console.log('Testing submit',currentQuizObject,QUIZBASE.QUIZ);
+    promptAfterSubmit(currentQuizObject);
+    
   });
 }
+
+
+
+
+
 
 function restartQuiz(){
   console.log('`restartQuiz` ran');
