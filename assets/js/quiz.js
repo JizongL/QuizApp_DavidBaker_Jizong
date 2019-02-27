@@ -12,7 +12,6 @@ const QUIZBASE = {
   ],
   quizStart:false,
   score:0,
-  
 };
 
 
