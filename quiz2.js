@@ -48,6 +48,7 @@ function generateQuizIntro(){
 }
 
 function generateQuiz(n){
+  
   console.log('`generateQuiz` ran');
   console.log('quiz num',n);
   console.log('test quiz object index in generate quiz',QUIZBASE.QUIZ[n]);
@@ -78,7 +79,7 @@ function generateQuiz(n){
     </form>
     <div class='quiz-navigate-bar'>
         <button type="submit" class="quiz-restart">Restart</button>
-        <button type="submit" class="quiz-next">Next</button>
+       
     </div>
     </div>`;
 }
@@ -152,23 +153,17 @@ function render() {
     
   } else {
     $('#content-box').empty();
-    console.log('testing quizArray length in render:',QUIZBASE.quizArray.length);
+    // console.log('testing quizArray length in render:',QUIZBASE.quizArray.length);
     if(!QUIZBASE.quizArray.length){
-      console.log('quiz is finished in render');
+      //console.log('quiz is finished in render');
       
       $('#content-box').html(generateFinishedMessage());// bug not rendering
-      $('.quiz-restart').click(function(){
-        restartQuiz();
-      });
-      $('.quiz-review').click(function(){
-        reviewQuiz();
-      });
+      quizRestartOrReviewbuttonHandle();
+      $('#quiz-status').empty();
     }
     
-    console.log('testing quizArray in render',QUIZBASE.quizArray);
+    //console.log('testing quizArray in render',QUIZBASE.quizArray);
     let index = QUIZBASE.quizArray.shift();
-    console.log('test index in render',index);
-    // push it to history index
     QUIZBASE.historyArray.push(index);
     $('#content-box').html(generateQuiz(index));
     // first argument keeps track of the number of question
@@ -178,8 +173,18 @@ function render() {
   }
 }
 
+function quizRestartOrReviewbuttonHandle(){
+  $('#content-box').on('click','.quiz-restart',function(){
+    restartQuiz();
+  });
+  $('#content-box').on('click','.quiz-review',function(){
+    reviewQuiz();
+  });
+}
+
+
 function startQuiz(){
-  $('')
+  
   $('#quiz-start-button').on('click', function(){
    
     QUIZBASE.quizStart = !QUIZBASE.quizStart;
@@ -234,40 +239,35 @@ function generatePromptAfterSubmit(rightWrong,Explain=''){
 }
 
 function promptAfterSubmit(object){
+  
+
   console.log('is correct test',object.isCorrect);
   if(object.isCorrect){
     QUIZBASE.score+=10;
     let correct = 'Correct,well done!';
     let trainsition = generatePromptAfterSubmit(correct);
     $('#content-box').html(trainsition);
+    
     $('.quiz-transition-continue').on('click',function(){
-      if(QUIZBASE.quizArray.length ===0){
-        console.log('quiz is finished');
-        $('#content-box').empty();
-        $('#quiz-status').empty();
-        $('#content-box').html(generateFinishedMessage());
-      }
       render();
       submitAnswer();
-      //nextQuestion();
+      
+     
     });
   }else{
     let wrong = 'Sorry, your answer is incorrect!';
     let trainsition = generatePromptAfterSubmit(wrong,object.explaination);
     $('#content-box').html(trainsition);
     $('.quiz-transition-continue').on('click',function(){
-      if(QUIZBASE.quizArray.length ===0){
-        console.log('quiz is finished');
-        $('#content-box').empty();
-        $('#quiz-status').empty();
-        $('#content-box').html(generateFinishedMessage());
-      }
+      //render();
+      //
       render();
       submitAnswer();
-      //nextQuestion();
+      
     });
   
   }
+  
 }
 
 // get key from value 
@@ -282,9 +282,12 @@ function getAnswerKey(object, value) {
 }
 
 
-
 function submitAnswer(){
   console.log('`submitAnswer` ran');
+  $('.quiz-restart').click(function(){
+    restartQuiz();
+  });
+
   $('form').on('submit',function(event){
     event.preventDefault();
     // get radio button checked value
@@ -305,8 +308,8 @@ function submitAnswer(){
     currentQuizObject.completed = !currentQuizObject.completed;
     currentQuizObject.submittedKey = submitedKey;
     console.log('Testing submit',currentQuizObject,QUIZBASE.QUIZ);
-    promptAfterSubmit(currentQuizObject);
     
+    promptAfterSubmit(currentQuizObject);
   });
 }
 
