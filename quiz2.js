@@ -141,19 +141,19 @@ function reviewQuiz(){
 
 // Render 
 function render() {
-  console.log('`render` ran');
-  console.log('test quizstart status',!QUIZBASE.QUIZ.quizStart);
+  //console.log('`render` ran');
+  //console.log('test quizstart status',!QUIZBASE.QUIZ.quizStart);
   if (!QUIZBASE.quizStart) {
-    console.log('not started',QUIZBASE.QUIZ.quizStart);
+    //console.log('not started',QUIZBASE.QUIZ.quizStart);
     $('#content-box').empty();
     $('#content-box').html(generateStart());
     $('#quiz-status').empty();
     
   } else {
     $('#content-box').empty();
-    console.log('testing quizArray length in render:',QUIZBASE.quizArray.length);
+    //console.log('testing quizArray length in render:',QUIZBASE.quizArray.length);
     if(!QUIZBASE.quizArray.length){
-      console.log('quiz is finished in render');
+      //console.log('quiz is finished in render');
       
       $('#content-box').html(generateFinishedMessage());// bug not rendering
       $('.quiz-restart').click(function(){
@@ -164,15 +164,15 @@ function render() {
       });
     }
     
-    console.log('testing quizArray in render',QUIZBASE.quizArray);
+    //console.log('testing quizArray in render',QUIZBASE.quizArray);
     let index = QUIZBASE.quizArray.shift();
-    console.log('test index in render',index);
+    //console.log('test index in render',index);
     // push it to history index
     QUIZBASE.historyArray.push(index);
     $('#content-box').html(generateQuiz(index));
     // first argument keeps track of the number of question
     $('#quiz-status').html(generateStatus(QUIZBASE.historyArray.length,QUIZBASE.score));
-    // submitAnswer();
+    // submitAnswerHandler();
     
   }
 }
@@ -186,7 +186,7 @@ function startQuiz(){
     generateQuizArray();
     console.log('test quiz array in startquiz',QUIZBASE.quizArray);
     render();
-    submitAnswer();
+    submitAnswerHandler();
     
   });
   
@@ -215,7 +215,7 @@ function generateQuizArray(){
 }
 
 // prompt after submit 
-function generatePromptAfterSubmit(rightWrong,Explain=''){
+function generatenextQuizHandler(rightWrong,Explain=''){
   return `<div class = 'quiz-transition-box'>
   <div class='quiz-correct-or-wrong'>
     <span>${rightWrong}</span>
@@ -230,12 +230,13 @@ function generatePromptAfterSubmit(rightWrong,Explain=''){
 </div>`;
 }
 
-function promptAfterSubmit(object){
-  console.log('is correct test',object.isCorrect);
+
+
+function promptTransition(object){
   if(object.isCorrect){
     QUIZBASE.score+=10;
     let correct = 'Correct,well done!';
-    let trainsition = generatePromptAfterSubmit(correct);
+    let trainsition = generatenextQuizHandler(correct);
     $('#content-box').html(trainsition);
     $('.quiz-transition-continue').on('click',function(){
       if(QUIZBASE.quizArray.length ===0){
@@ -244,13 +245,10 @@ function promptAfterSubmit(object){
         $('#quiz-status').empty();
         $('#content-box').html(generateFinishedMessage());
       }
-      render();
-      submitAnswer();
-      //nextQuestion();
     });
   }else{
     let wrong = 'Sorry, your answer is incorrect!';
-    let trainsition = generatePromptAfterSubmit(wrong,object.explaination);
+    let trainsition = generatenextQuizHandler(wrong,object.explaination);
     $('#content-box').html(trainsition);
     $('.quiz-transition-continue').on('click',function(){
       if(QUIZBASE.quizArray.length ===0){
@@ -259,12 +257,17 @@ function promptAfterSubmit(object){
         $('#quiz-status').empty();
         $('#content-box').html(generateFinishedMessage());
       }
-      render();
-      submitAnswer();
-      //nextQuestion();
+      
     });
   
   }
+}
+
+function nextQuizHandler(object){
+  console.log('is correct test',object.isCorrect);
+  promptTransition(object);
+  render();
+  submitAnswerHandler();
 }
 
 // get key from value 
@@ -278,22 +281,28 @@ function getAnswerKey(object, value) {
   return key;
 }
 
+
+
+
+
 // submit answer 
-function submitAnswer(){
-  console.log('`submitAnswer` ran');
+function submitAnswerHandler(){
+  console.log('`submitAnswerHandler` ran');
+  let selected,answer,currentQuizId;
   $('form').on('submit',function(event){
     event.preventDefault();
     // get radio button checked value
-    let selected = $('input:checked');
-    let answer = selected.val();
-    console.log('selected answer',answer);  // tested
+    selected = $('input:checked');
+    answer = selected.val();
+    //console.log('selected answer',answer);  // tested
     // find current quiz id
-    let currentQuizId = $(this).data('item-id');
-    console.log('testing current quiz id',currentQuizId); //
+    currentQuizId = $(this).data('item-id');
+    //console.log('testing current quiz id',currentQuizId); //
+  
     let currentQuizObject = QUIZBASE.QUIZ.find(quiz => quiz.id === currentQuizId);
     // get submitted anawer value through cuid. 
     let submitedKey = getAnswerKey(currentQuizObject.answerKey,answer);  // has bug 
-    console.log('compare keys',currentQuizObject.correctKey,submitedKey);  // has bug
+    //console.log('compare keys',currentQuizObject.correctKey,submitedKey);  // has bug
 
     if(currentQuizObject.correctKey===submitedKey){
       currentQuizObject.isCorrect =!currentQuizObject.isCorrect;
@@ -301,9 +310,10 @@ function submitAnswer(){
     currentQuizObject.completed = !currentQuizObject.completed;
     currentQuizObject.submittedKey = submitedKey;
     console.log('Testing submit',currentQuizObject,QUIZBASE.QUIZ);
-    promptAfterSubmit(currentQuizObject);
-    
+    nextQuizHandler(currentQuizObject);
   });
+    
+  
 }
 
 // restart quiz
