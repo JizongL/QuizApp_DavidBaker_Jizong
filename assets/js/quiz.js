@@ -12,8 +12,8 @@ const QUIZBASE = {
   ],
   quizStart:false,
   score:0,
+  
 };
-
 
 
 
@@ -58,21 +58,3 @@ function handleQuizApp(){
 }
 
 $(handleQuizApp);
-
-
-
-
-
-$( '#js-start' ).on( 'click', function() {
-  console.log('I hear you');
-});
-
-function generateStart(){
-  console.log('`generateIntro` ran');
-  return `<div id='start-quiz-box'>
-  <button id = 'quiz-intro'>Read quiz intro</button>
-  <p>Let's start Quiz</p>
-  <button id='quiz-start' type='submit'>Start Quiz</button>
-  </div>`;
-}
-
