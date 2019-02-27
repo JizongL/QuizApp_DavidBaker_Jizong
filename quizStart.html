@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="assets/css/reset.css">
-    <link rel="stylesheet" href="assets/css/quizStartMenu.css">
+    <link rel="stylesheet" type='text/css' href="assets/css/quizStartMenu.css">
     <title>Document</title>
 </head>
 <body>
-
+    <!-- state1 -->
     <div id='wrapper'>
         <div class="container">
-            <header id='js-header' role='header'>
+            <header id='js-header' class='' role='header'>
                 <h1 id='js-header-text'> Pop Quiz! </h1>
                 <p id='js-direction-text'>Your job is to answer the following questions.</p>
                 <button id='js-start' type='button'><span class='start-game'>Start</span>
@@ -21,15 +21,40 @@
         </div>
     </div>
 
+    <!-- state2 -->
+    <!-- <div id="js-state2"></div>
+     <div class='wrapper'>
+        <div class='quiz-container'>
+      
+          <div id='js-score-container'><span id='js-score-count'>Score: 0</span>
+          </div>
+      
+          <div id='js-questions-submit'>
+              <h2 id='js-question-content'><span>What is the color of the Sky?</span>
+              </h2>
+              <div id="js-prompt"></div>
+              <ul id='js-unordered-list'>
+                <li>A) place holder</li>
+                <li>B) place holder</li>
+                <li>C) place holder</li>
+                <li>D) place holder</li>
+              </ul>
+              <button id='js-quiz-submit' type='submit'>Submit</button>
+          </div>
+      
+          <div id="js-btn-container">
+            <button id='js-quiz-start' type='restart'>Restart</button>
+            <div id='js-current-question'><span>1 of 10</span></div>
+            <button id='js-quiz-start' type='submit'>Next</button>
+          </div>
+          
+        </div>
+      </div> -->
 
 
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script type="text/javascript" src="assets/js/QuestionAnswer.js"></script>  
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/cuid/1.3.8/browser-cuid.min.js"></script>
     <script type="text/javascript" src="assets/js/quizStart.js"></script>
-    <script> 
-        $(function(){
-            $('#includedContent').load('quiz.html'); 
-        });
-    </script> 
+
 </body>
 </html>
