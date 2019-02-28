@@ -39,7 +39,7 @@ function generateStart(){
   <div class='quiz-start-content'>
   <p id='quiz-start-title'>Welcome to ${QUIZBASE.quizTitle}</p>
   </div>
-    <button id='quiz-start-button' type='submit'>Start Quiz</button>
+    <button class = 'button' id='quiz-start-button' type='submit'><span>Start Quiz</span></button>
     </div>`;
 }
 
@@ -49,11 +49,11 @@ function generateQuizIntro(){
 
 function generateQuiz(n){
   
-  console.log('`generateQuiz` ran');
-  console.log('quiz num',n);
-  console.log('test quiz object index in generate quiz',QUIZBASE.QUIZ[n]);
-  console.log('test answer keys',QUIZBASE.QUIZ[n].answerKey);
-  console.log('test correct answer keys',QUIZBASE.QUIZ[n].correctKey);
+  //console.log('`generateQuiz` ran');
+  //console.log('quiz num',n);
+  //console.log('test quiz object index in generate quiz',QUIZBASE.QUIZ[n]);
+  //console.log('test answer keys',QUIZBASE.QUIZ[n].answerKey);
+  //console.log('test correct answer keys',QUIZBASE.QUIZ[n].correctKey);
   return `<div data-item-id = ${QUIZBASE.QUIZ[n].id} id = 'quiz-content'>
   <p class='quiz-question'>${QUIZBASE.historyArray.length}. ${QUIZBASE.QUIZ[n].question}</p>
   <form data-item-id = ${QUIZBASE.QUIZ[n].id} class = 'quiz-submit-form'>
@@ -74,13 +74,11 @@ function generateQuiz(n){
     <input type="radio" value="${QUIZBASE.QUIZ[n].answerKey.d}" name="answer" required>
     <span>D) ${QUIZBASE.QUIZ[n].answerKey.d}</span>
     </label>
-    <button type="submit" class="quiz-answer-submit">Submit</button>
+    <button type="submit" class="button quiz-answer-submit"><span>Submit</span></button>
+    <button type="submit" class="button quiz-restart"><span>Restart</span></button>
     </fieldset>
     </form>
-    <div class='quiz-navigate-bar'>
-        <button type="submit" class="quiz-restart">Restart</button>
-       
-    </div>
+    
     </div>`;
 }
 
@@ -90,7 +88,10 @@ function generateQuiz(n){
 
 function generateStatus(quizNum,score){
   console.log('`generateStatus` ran');
-  return ` <ul id='quiz-status-field'>
+  return ` 
+ 
+  <ul id='quiz-status-field'>
+  <li id='quiz-title-bar'>${QUIZBASE.quizTitle}</li>
   <li id = 'quiz-number'>Qestion: ${quizNum}/10</li>
   <li id = 'quiz-score'>Score:${score}/100</li>
 </ul>`;
@@ -115,13 +116,13 @@ function generateFinishedMessage(){
 <ul class = "quiz-final-stat">
   <li>Your score is <span>${statArray[0]}</span></li>
   <li>You got</li>
-  <li><span>${statArray[1]}</span>correct </li>
-  <li><span>${statArray[2]}</span>wrong </li>
+  <li><span>${statArray[1]} </span>correct </li>
+  <li><span>${statArray[2]} </span>wrong </li>
 </ul>
 </div> 
 <div>
-<button class = 'quiz-review' type = 'submit'>Review</button>
-<button class = 'quiz-restart' type = 'submit'>Restart</button>      
+<button class = 'button quiz-review' type = 'submit'><span>Review</span></button>
+<button class = 'button quiz-restart' type = 'submit'><span>Restart</span></button>      
 </div>`;
 }
 
@@ -228,12 +229,21 @@ function generatePromptAfterSubmit(rightWrong,Explain=''){
   <div class='quiz-correct-or-wrong'>
     <span>${rightWrong}</span>
   </div>
+  <div class='dog-paw'>
+  <div id="dots">
+  <div id="dot1" class="dot"></div>
+  <div id="dot2" class="dot"></div>
+  <div id="dot3" class="dot"></div>
+  <div id="dot4" class="dot"></div>
+  <div id="dot5" class="dot5"></div>
+  </div>
+</div>
   <div class= 'quiz-explaination-field'>
   <p class = 'quiz-explaination-content'>
     ${Explain}
   </p>
   </div>
-  <button type="submit" class="quiz-transition-continue">Continue</button>
+  <button type="submit" class="button quiz-transition-continue"><span>Continue</span></button>
   
 </div>`;
 }
@@ -308,9 +318,10 @@ function submitAnswer(){
     currentQuizObject.completed = !currentQuizObject.completed;
     currentQuizObject.submittedKey = submitedKey;
     console.log('Testing submit',currentQuizObject,QUIZBASE.QUIZ);
-    
     promptAfterSubmit(currentQuizObject);
+   
   });
+  
 }
 
 
