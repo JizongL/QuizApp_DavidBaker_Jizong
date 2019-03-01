@@ -66,9 +66,6 @@ function generateQuiz(n){
 }
 
 
-
-
-
 function generateStatus(quizNum,score){
   console.log('`generateStatus` ran');
   return ` <ul id='quiz-status-field'>
